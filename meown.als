@@ -90,6 +90,18 @@ fact motor {
 	all s : State, s' : s.next | some c: Carruagem | some d: Direccao | movimentacaoCarruagem[s,s',c]
 }
  */
+
+assert cond1 {
+	one s: first | all p: Pessoa | s.direccaoPessoa[p] = Nenhuma
+}
+assert cond2 {
+	one s: first | all c: Carruagem | s.direccaoCarruagem[c] = Nenhuma
+}
+assert cond3 {
+	one s: first | all p: Paragem | s.direccaoParagem[p] = Nenhuma
+}
+
 //check verificar for 6
 //check verMovimentoSenaoTamosLixadosNaoSeVeNada for 6
 run {} for 4
+//check cond3
