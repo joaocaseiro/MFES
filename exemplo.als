@@ -1,5 +1,3 @@
-===========================
-
 module examples/toys/pacman
 
 open util/ordering[State]

@@ -35,7 +35,7 @@ one sig Direita, Esquerda, Nenhuma, Ambas extends Direccao {}
 //------------------------------------------------------------------------------------------------
 //----------------------------------- Restringir "seguinte" ---------------------------------
 //------------------------------------------------------------------------------------------------
-fact naoHaCiclos
+fact aUltimaParagemLigaSempreAPrimeira
 {
 	all p1: Paragem | p1 in p1.^seguinte
 }
@@ -44,13 +44,25 @@ fact naoHaParagemSeguinteIgualParaDuasParagensDiferentes {
 	all p1: Paragem, p2: Paragem, p3:Paragem | 
 	(p1 != p3 && (p1.seguinte = p2)) => !(p3.seguinte = p2)
 }
- 
-fact todasParagensLigadas
-{
-	all p1: Paragem, p2: Paragem | (p1 in p2.*seguinte) || (p1 in *seguinte.p2)
+
+fact ambasApenasPodeExistirEmParagem {
+	all s: State, p: Pessoa, c: Carruagem | Ambas not in (s.direccaoCarruagem[c]  + s.direccaoPessoa[p])
 }
 //------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------
+
+pred estadoInicial[s: State] {
+	all c1: Carruagem, c2: Carruagem | s.localActualDeCarruagem[c1] = s.localActualDeCarruagem[c2]
+	all p: Pessoa | s.direccaoPessoa[p] = Nenhuma
+	all c: Carruagem | s.direccaoCarruagem[c] = Nenhuma
+	all pa: Paragem | s.direccaoParagem[pa] = Nenhuma
+	
+}
+
+fact inicio {
+	estadoInicial[first]
+}
+
 /*
 //------------------------------------------------------------------------------------------------
 //--------------------------------------------- Pred's ------------------------------------------
