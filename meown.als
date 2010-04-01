@@ -3,26 +3,29 @@
 open util/ordering[State]
  
 sig State {
-	localActual: Carruagem set -> one Paragem
+	//carruagens e pessoas sao as unicas coisas que mudam de sitio
+	localActualDeCarruagem: Carruagem set -> one Paragem,
+	carruagemActualDePessoa: Pessoa set -> one Carruagem,
+	paragemActualDePessoaAEspera: Pessoa set -> one Paragem,
+	
+	//direccoes que mudam (ter uma direccao em pessoa nao torna desnecessario ter direccao em paragem?)
+	direccaoCarruagem: Carruagem set -> one Direccao,
+	direccaoParagem: Paragem set -> one Direccao,
+	direccaoPessoa: Pessoa set -> one Direccao,
+
+	//proximos destinos da carruagem mudam (ver se tem interesse ter uma lista aqui)
+	destinosCarruagem: Carruagem set -> set Paragem
 }
  
 sig Paragem {
-	seguinte: lone Paragem,
-	chamada: one Direccao,
-	espera: set Pessoa
+	seguinte: lone Paragem
 }
  
 sig Carruagem {
-	movimento: one Direccao,
-	viagem: set Paragem
-}
-{
-	movimento != Ambas
 }
  
 sig Pessoa {
-	destino: one Paragem,
-	passageiros: one Carruagem
+	destino: one Paragem
 }
  
 abstract sig Direccao {}
@@ -48,7 +51,7 @@ fact todasParagensLigadas
 }
 //------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------
- 
+/*
 //------------------------------------------------------------------------------------------------
 //--------------------------------------------- Pred's ------------------------------------------
 //------------------------------------------------------------------------------------------------
@@ -74,7 +77,7 @@ fact motor {
 	all c1: Carruagem | c1.movimento = Nenhuma
 	all s : State, s' : s.next | some c: Carruagem | some d: Direccao | movimentacaoCarruagem[s,s',c]
 }
- 
+ */
 //check verificar for 6
 //check verMovimentoSenaoTamosLixadosNaoSeVeNada for 6
 run {} for 4
